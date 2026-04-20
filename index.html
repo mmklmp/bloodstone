@@ -1,315 +1,365 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>bloodstone</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@200;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Unbounded:wght@200;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg: #040404;
+      --surface: #0a0a0a;
+      --border: #2a2a2a;
+      --border-bright: #3a3a3a;
+      --text: #e8e8e0;
+      --muted: #555550;
+      --accent: #cc1a1a;
+      --accent-dim: #3a0808;
+      --accent-bright: #ff2222;
+      --output-bg: #060606;
+      --font-display: 'Unbounded', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
 
-:root {
-  --bg: #0a0a0a;
-  --surface: #111111;
-  --border: #222222;
-  --text: #c8c8c0;
-  --muted: #444440;
-  --accent: #b8a080;
-  --accent-dim: #4a3f2f;
-  --output-bg: #0d0d0d;
-  --font-display: 'Unbounded', sans-serif;
-  --font-mono: 'Courier Prime', monospace;
-}
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+    }
 
-html, body {
-  height: 100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.7;
-}
+    body {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
 
-body {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
-  padding: 0;
-}
+    /* HEADER */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 18px 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      background: var(--surface);
+    }
 
-/* HEADER */
-header {
-  border-bottom: 1px solid var(--border);
-  padding: 20px 32px;
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-}
+    header h1 {
+      font-family: var(--font-display);
+      font-weight: 200;
+      font-size: 12px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
 
-header h1 {
-  font-family: var(--font-display);
-  font-weight: 200;
-  font-size: 13px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
+    header span {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+    }
 
-header span {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.1em;
-}
+    header .status {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-/* MAIN LAYOUT */
-main {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  height: 100%;
-  overflow: hidden;
-}
+    header .status::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: blink 2s step-end infinite;
+    }
 
-/* PANELS */
-.panel {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
 
-.panel-left {
-  border-right: 1px solid var(--border);
-}
+    /* MAIN LAYOUT */
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100%;
+      overflow: hidden;
+    }
 
-.panel-label {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 9px;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 14px 20px 10px;
-  border-bottom: 1px solid var(--border);
-}
+    .panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-textarea {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.8;
-  padding: 24px 20px;
-  resize: none;
-  caret-color: var(--accent);
-}
+    .panel-left {
+      border-right: 1px solid var(--border);
+    }
 
-textarea::placeholder {
-  color: var(--muted);
-  font-style: italic;
-}
+    .panel-label {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 8px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 12px 20px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* OUTPUT */
-.output-area {
-  flex: 1;
-  padding: 24px 20px;
-  overflow-y: auto;
-  background: var(--output-bg);
-  white-space: pre-wrap;
-  font-size: 14px;
-  line-height: 1.9;
-  color: var(--text);
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
+    textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.8;
+      padding: 22px 20px;
+      resize: none;
+      caret-color: var(--accent);
+    }
 
-.output-area.empty {
-  color: var(--muted);
-  font-style: italic;
-}
+    textarea::placeholder {
+      color: var(--muted);
+    }
 
-.output-area .thinking {
-  color: var(--muted);
-  animation: pulse 1.4s ease-in-out infinite;
-}
+    /* OUTPUT */
+    .output-area {
+      flex: 1;
+      padding: 22px 20px;
+      overflow-y: auto;
+      background: var(--output-bg);
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
+    .output-area.empty {
+      color: var(--muted);
+    }
 
-/* FOOTER / CONTROLS */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
+    .output-area .thinking {
+      color: var(--accent);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
 
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  flex-wrap: wrap;
-}
+    @keyframes pulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
 
-.control-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+    /* COPY BUTTON */
+    .copy-btn {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.15s;
+    }
 
-.control-group label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
+    .copy-btn:hover { color: var(--accent); }
+    .copy-btn.copied { color: var(--accent-bright); }
 
-.control-group input[type="range"] {
-  -webkit-appearance: none;
-  width: 80px;
-  height: 1px;
-  background: var(--border);
-  outline: none;
-  cursor: pointer;
-}
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: var(--surface);
+    }
 
-.control-group input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 10px;
-  height: 10px;
-  background: var(--accent);
-  border-radius: 50%;
-  cursor: pointer;
-}
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      flex-wrap: wrap;
+    }
 
-.control-group .val {
-  font-size: 11px;
-  color: var(--accent);
-  min-width: 28px;
-  font-family: var(--font-mono);
-}
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.control-group input[type="text"] {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--border);
-  outline: none;
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  width: 90px;
-  padding: 2px 4px;
-}
+    .control-group label {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
 
-.system-toggle {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: var(--font-mono);
-  padding: 4px 0;
-  transition: color 0.2s;
-}
+    /* step buttons */
+    .step-btn {
+      width: 18px;
+      height: 18px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      padding: 0 0 1px 0;
+      flex-shrink: 0;
+      user-select: none;
+    }
 
-.system-toggle:hover { color: var(--accent); }
+    .step-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
 
-.transmute-btn {
-  background: none;
-  border: 1px solid var(--accent-dim);
-  color: var(--accent);
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 9px;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
+    .step-btn:active {
+      background: var(--accent-dim);
+    }
 
-.transmute-btn:hover {
-  background: var(--accent-dim);
-  border-color: var(--accent);
-}
+    .control-group input[type="range"] {
+      -webkit-appearance: none;
+      width: 65px;
+      height: 1px;
+      background: var(--border-bright);
+      outline: none;
+      cursor: pointer;
+    }
 
-.transmute-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
+    .control-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 9px;
+      height: 9px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+    }
 
-/* SYSTEM PROMPT DRAWER */
-.system-drawer {
-  border-top: 1px solid var(--border);
-  background: var(--surface);
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease;
-}
+    .control-group .val {
+      font-size: 11px;
+      color: var(--accent);
+      min-width: 32px;
+      font-family: var(--font-mono);
+    }
 
-.system-drawer.open {
-  max-height: 160px;
-}
+    .system-toggle {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--font-mono);
+      padding: 4px 0;
+      transition: color 0.15s;
+    }
 
-.system-drawer textarea {
-  padding: 14px 20px;
-  font-size: 12px;
-  color: var(--muted);
-  height: 160px;
-}
+    .system-toggle:hover { color: var(--accent); }
 
-.system-drawer textarea:focus {
-  color: var(--text);
-}
+    .transmute-btn {
+      background: none;
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 8px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
 
-/* SESSION */
-.session-clear {
-  font-size: 10px;
-  color: var(--muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  letter-spacing: 0.1em;
-  transition: color 0.2s;
-}
+    .transmute-btn:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent-bright);
+    }
 
-.session-clear:hover { color: #884444; }
+    .transmute-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
 
-/* ERROR */
-.error-msg {
-  color: #884444;
-  font-size: 12px;
-  padding: 24px 20px;
-  font-style: italic;
-}
+    /* SYSTEM DRAWER */
+    .system-drawer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.25s ease;
+    }
 
-/* MOBILE */
-@media (max-width: 680px) {
-  main {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-  }
-  .panel-left {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  footer {
-    gap: 12px;
-  }
-}
+    .system-drawer.open {
+      max-height: 140px;
+    }
 
+    .system-drawer textarea {
+      padding: 14px 20px;
+      font-size: 12px;
+      color: var(--muted);
+      height: 140px;
+    }
+
+    .system-drawer textarea:focus {
+      color: var(--text);
+    }
+
+    .error-msg {
+      color: #882222;
+      font-size: 12px;
+      font-style: italic;
+    }
+
+    .divider {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 680px) {
+      main {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+      }
+      .panel-left {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+    }
   </style>
 </head>
 <body>
@@ -317,17 +367,21 @@ footer {
 <header>
   <h1>bloodstone</h1>
   <span>transmutation engine</span>
+  <div class="status">online</div>
 </header>
 
 <main>
   <div class="panel panel-left">
-    <div class="panel-label">input</div>
-    <textarea id="input" placeholder="feed the wall something..."></textarea>
+    <div class="panel-label"><span>input</span></div>
+    <textarea id="input" placeholder="feed it something..."></textarea>
   </div>
 
   <div class="panel panel-right">
-    <div class="panel-label">output</div>
-    <div class="output-area empty" id="output">waiting for signal.</div>
+    <div class="panel-label">
+      <span>output</span>
+      <button class="copy-btn" id="copyBtn">copy</button>
+    </div>
+    <div class="output-area empty" id="output">waiting.</div>
   </div>
 </main>
 
@@ -337,85 +391,109 @@ footer {
 
 <footer>
   <div class="controls">
+
     <div class="control-group">
       <label>temp</label>
+      <button class="step-btn" data-target="temp" data-dir="-1">−</button>
       <input type="range" id="temp" min="0.1" max="2.0" step="0.05" value="1.2">
-      <span class="val" id="tempVal">1.2</span>
+      <button class="step-btn" data-target="temp" data-dir="1">+</button>
+      <span class="val" id="tempVal">1.20</span>
     </div>
 
-```
-<div class="control-group">
-  <label>presence</label>
-  <input type="range" id="presence" min="0" max="2.0" step="0.05" value="0.0">
-  <span class="val" id="presenceVal">0.0</span>
-</div>
+    <div class="divider"></div>
 
-<div class="control-group">
-  <label>frequency</label>
-  <input type="range" id="frequency" min="0" max="2.0" step="0.05" value="0.0">
-  <span class="val" id="frequencyVal">0.0</span>
-</div>
+    <div class="control-group">
+      <label>pres</label>
+      <button class="step-btn" data-target="presence" data-dir="-1">−</button>
+      <input type="range" id="presence" min="0" max="2.0" step="0.05" value="0.0">
+      <button class="step-btn" data-target="presence" data-dir="1">+</button>
+      <span class="val" id="presenceVal">0.00</span>
+    </div>
 
-<div class="control-group">
-  <label>session</label>
-  <input type="text" id="sessionId" value="default" />
-</div>
+    <div class="divider"></div>
 
-<button class="system-toggle" id="systemToggle">[ system ]</button>
-<button class="session-clear" id="clearBtn">clear session</button>
-```
+    <div class="control-group">
+      <label>freq</label>
+      <button class="step-btn" data-target="frequency" data-dir="-1">−</button>
+      <input type="range" id="frequency" min="0" max="2.0" step="0.05" value="0.0">
+      <button class="step-btn" data-target="frequency" data-dir="1">+</button>
+      <span class="val" id="frequencyVal">0.00</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="system-toggle" id="systemToggle">[ system ]</button>
 
   </div>
 
-<button class="transmute-btn" id="submitBtn">transmute</button>
-
+  <button class="transmute-btn" id="submitBtn">transmute</button>
 </footer>
 
 <script>
   const WORKER_URL = "https://bloodstone.1222hz.workers.dev";
-
   const DEFAULT_SYSTEM = "You are not the wall, you are a brick on the wall. A part of the whole. Speak in fragments of free-verse poetry.";
 
-  const inputEl = document.getElementById("input");
-  const outputEl = document.getElementById("output");
-  const submitBtn = document.getElementById("submitBtn");
-  const tempEl = document.getElementById("temp");
-  const tempVal = document.getElementById("tempVal");
-  const presenceEl = document.getElementById("presence");
+  const inputEl     = document.getElementById("input");
+  const outputEl    = document.getElementById("output");
+  const submitBtn   = document.getElementById("submitBtn");
+  const copyBtn     = document.getElementById("copyBtn");
+  const tempEl      = document.getElementById("temp");
+  const tempVal     = document.getElementById("tempVal");
+  const presenceEl  = document.getElementById("presence");
   const presenceVal = document.getElementById("presenceVal");
   const frequencyEl = document.getElementById("frequency");
-  const frequencyVal = document.getElementById("frequencyVal");
-  const sessionEl = document.getElementById("sessionId");
-  const systemEl = document.getElementById("systemPrompt");
-  const systemToggle = document.getElementById("systemToggle");
-  const systemDrawer = document.getElementById("systemDrawer");
-  const clearBtn = document.getElementById("clearBtn");
+  const frequencyVal= document.getElementById("frequencyVal");
+  const systemEl    = document.getElementById("systemPrompt");
+  const systemToggle= document.getElementById("systemToggle");
+  const systemDrawer= document.getElementById("systemDrawer");
 
   systemEl.value = DEFAULT_SYSTEM;
 
-  // sliders
-  tempEl.addEventListener("input", () => tempVal.textContent = parseFloat(tempEl.value).toFixed(2));
-  presenceEl.addEventListener("input", () => presenceVal.textContent = parseFloat(presenceEl.value).toFixed(2));
-  frequencyEl.addEventListener("input", () => frequencyVal.textContent = parseFloat(frequencyEl.value).toFixed(2));
+  function fmt(v) { return parseFloat(v).toFixed(2); }
 
-  // system drawer toggle
+  tempEl.addEventListener("input", () => tempVal.textContent = fmt(tempEl.value));
+  presenceEl.addEventListener("input", () => presenceVal.textContent = fmt(presenceEl.value));
+  frequencyEl.addEventListener("input", () => frequencyVal.textContent = fmt(frequencyEl.value));
+
+  // +/- step buttons
+  document.querySelectorAll(".step-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(btn.dataset.target);
+      const dir = parseInt(btn.dataset.dir);
+      const step = parseFloat(target.step);
+      const min = parseFloat(target.min);
+      const max = parseFloat(target.max);
+      const newVal = Math.min(max, Math.max(min, parseFloat(target.value) + dir * step));
+      target.value = newVal.toFixed(2);
+      target.dispatchEvent(new Event("input"));
+    });
+  });
+
+  // system drawer
   systemToggle.addEventListener("click", () => {
     systemDrawer.classList.toggle("open");
   });
 
-  // submit on cmd+enter or ctrl+enter
+  // copy button
+  copyBtn.addEventListener("click", () => {
+    const txt = outputEl.textContent;
+    if (!txt || outputEl.classList.contains("empty")) return;
+    navigator.clipboard.writeText(txt).then(() => {
+      copyBtn.textContent = "copied";
+      copyBtn.classList.add("copied");
+      setTimeout(() => {
+        copyBtn.textContent = "copy";
+        copyBtn.classList.remove("copied");
+      }, 1500);
+    });
+  });
+
+  // cmd/ctrl + enter
   inputEl.addEventListener("keydown", (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "Enter") transmute();
   });
 
   submitBtn.addEventListener("click", transmute);
-
-  clearBtn.addEventListener("click", async () => {
-    // just clear local context — KV manages server side
-    outputEl.textContent = "session cleared.";
-    outputEl.className = "output-area empty";
-    inputEl.value = "";
-  });
 
   async function transmute() {
     const prompt = inputEl.value.trim();
@@ -432,20 +510,19 @@ footer {
         body: JSON.stringify({
           prompt,
           system: systemEl.value.trim() || DEFAULT_SYSTEM,
-          session_id: sessionEl.value.trim() || "default",
           temperature: parseFloat(tempEl.value),
           presence_penalty: parseFloat(presenceEl.value),
           frequency_penalty: parseFloat(frequencyEl.value)
         })
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const err = await res.json();
-        outputEl.innerHTML = `<span class="error-msg">signal lost. ${JSON.stringify(err)}</span>`;
+        outputEl.innerHTML = `<span class="error-msg">signal lost. ${JSON.stringify(data.error)}</span>`;
         return;
       }
 
-      const data = await res.json();
       outputEl.textContent = data.text;
       outputEl.className = "output-area";
 
@@ -456,6 +533,5 @@ footer {
     }
   }
 </script>
-
 </body>
 </html>
