@@ -1,0 +1,462 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5brick</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@200;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #222222;
+  --text: #c8c8c0;
+  --muted: #444440;
+  --accent: #b8a080;
+  --accent-dim: #4a3f2f;
+  --output-bg: #0d0d0d;
+  --font-display: 'Unbounded', sans-serif;
+  --font-mono: 'Courier Prime', monospace;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* HEADER */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+header h1 {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+header span {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* MAIN LAYOUT */
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* PANELS */
+.panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-left {
+  border-right: 1px solid var(--border);
+}
+
+.panel-label {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 14px 20px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 24px 20px;
+  resize: none;
+  caret-color: var(--accent);
+}
+
+textarea::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* OUTPUT */
+.output-area {
+  flex: 1;
+  padding: 24px 20px;
+  overflow-y: auto;
+  background: var(--output-bg);
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--text);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.output-area.empty {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.output-area .thinking {
+  color: var(--muted);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* FOOTER / CONTROLS */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-group label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.control-group input[type="range"] {
+  -webkit-appearance: none;
+  width: 80px;
+  height: 1px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.control-group .val {
+  font-size: 11px;
+  color: var(--accent);
+  min-width: 28px;
+  font-family: var(--font-mono);
+}
+
+.control-group input[type="text"] {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  width: 90px;
+  padding: 2px 4px;
+}
+
+.system-toggle {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-mono);
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.system-toggle:hover { color: var(--accent); }
+
+.transmute-btn {
+  background: none;
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.transmute-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+.transmute-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* SYSTEM PROMPT DRAWER */
+.system-drawer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+.system-drawer.open {
+  max-height: 160px;
+}
+
+.system-drawer textarea {
+  padding: 14px 20px;
+  font-size: 12px;
+  color: var(--muted);
+  height: 160px;
+}
+
+.system-drawer textarea:focus {
+  color: var(--text);
+}
+
+/* SESSION */
+.session-clear {
+  font-size: 10px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  transition: color 0.2s;
+}
+
+.session-clear:hover { color: #884444; }
+
+/* ERROR */
+.error-msg {
+  color: #884444;
+  font-size: 12px;
+  padding: 24px 20px;
+  font-style: italic;
+}
+
+/* MOBILE */
+@media (max-width: 680px) {
+  main {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .panel-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  footer {
+    gap: 12px;
+  }
+}
+```
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>5brick</h1>
+  <span>transmutation engine</span>
+</header>
+
+<main>
+  <div class="panel panel-left">
+    <div class="panel-label">input</div>
+    <textarea id="input" placeholder="feed the wall something..."></textarea>
+  </div>
+
+  <div class="panel panel-right">
+    <div class="panel-label">output</div>
+    <div class="output-area empty" id="output">waiting for signal.</div>
+  </div>
+</main>
+
+<div class="system-drawer" id="systemDrawer">
+  <textarea id="systemPrompt" placeholder="system prompt..."></textarea>
+</div>
+
+<footer>
+  <div class="controls">
+    <div class="control-group">
+      <label>temp</label>
+      <input type="range" id="temp" min="0.1" max="2.0" step="0.05" value="1.2">
+      <span class="val" id="tempVal">1.2</span>
+    </div>
+
+```
+<div class="control-group">
+  <label>presence</label>
+  <input type="range" id="presence" min="0" max="2.0" step="0.05" value="0.0">
+  <span class="val" id="presenceVal">0.0</span>
+</div>
+
+<div class="control-group">
+  <label>frequency</label>
+  <input type="range" id="frequency" min="0" max="2.0" step="0.05" value="0.0">
+  <span class="val" id="frequencyVal">0.0</span>
+</div>
+
+<div class="control-group">
+  <label>session</label>
+  <input type="text" id="sessionId" value="default" />
+</div>
+
+<button class="system-toggle" id="systemToggle">[ system ]</button>
+<button class="session-clear" id="clearBtn">clear session</button>
+```
+
+  </div>
+
+<button class="transmute-btn" id="submitBtn">transmute</button>
+
+</footer>
+
+<script>
+  const WORKER_URL = "https://bloodstone.1222hz.workers.dev";
+
+  const DEFAULT_SYSTEM = "You are not the wall, you are a brick on the wall. A part of the whole. Speak in fragments of free-verse poetry.";
+
+  const inputEl = document.getElementById("input");
+  const outputEl = document.getElementById("output");
+  const submitBtn = document.getElementById("submitBtn");
+  const tempEl = document.getElementById("temp");
+  const tempVal = document.getElementById("tempVal");
+  const presenceEl = document.getElementById("presence");
+  const presenceVal = document.getElementById("presenceVal");
+  const frequencyEl = document.getElementById("frequency");
+  const frequencyVal = document.getElementById("frequencyVal");
+  const sessionEl = document.getElementById("sessionId");
+  const systemEl = document.getElementById("systemPrompt");
+  const systemToggle = document.getElementById("systemToggle");
+  const systemDrawer = document.getElementById("systemDrawer");
+  const clearBtn = document.getElementById("clearBtn");
+
+  systemEl.value = DEFAULT_SYSTEM;
+
+  // sliders
+  tempEl.addEventListener("input", () => tempVal.textContent = parseFloat(tempEl.value).toFixed(2));
+  presenceEl.addEventListener("input", () => presenceVal.textContent = parseFloat(presenceEl.value).toFixed(2));
+  frequencyEl.addEventListener("input", () => frequencyVal.textContent = parseFloat(frequencyEl.value).toFixed(2));
+
+  // system drawer toggle
+  systemToggle.addEventListener("click", () => {
+    systemDrawer.classList.toggle("open");
+  });
+
+  // submit on cmd+enter or ctrl+enter
+  inputEl.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") transmute();
+  });
+
+  submitBtn.addEventListener("click", transmute);
+
+  clearBtn.addEventListener("click", async () => {
+    // just clear local context — KV manages server side
+    outputEl.textContent = "session cleared.";
+    outputEl.className = "output-area empty";
+    inputEl.value = "";
+  });
+
+  async function transmute() {
+    const prompt = inputEl.value.trim();
+    if (!prompt) return;
+
+    submitBtn.disabled = true;
+    outputEl.className = "output-area";
+    outputEl.innerHTML = '<span class="thinking">transmuting...</span>';
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt,
+          system: systemEl.value.trim() || DEFAULT_SYSTEM,
+          session_id: sessionEl.value.trim() || "default",
+          temperature: parseFloat(tempEl.value),
+          presence_penalty: parseFloat(presenceEl.value),
+          frequency_penalty: parseFloat(frequencyEl.value)
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        outputEl.innerHTML = `<span class="error-msg">signal lost. ${JSON.stringify(err)}</span>`;
+        return;
+      }
+
+      const data = await res.json();
+      outputEl.textContent = data.text;
+      outputEl.className = "output-area";
+
+    } catch (err) {
+      outputEl.innerHTML = `<span class="error-msg">no signal. ${err.message}</span>`;
+    } finally {
+      submitBtn.disabled = false;
+    }
+  }
+</script>
+
+</body>
+</html>
